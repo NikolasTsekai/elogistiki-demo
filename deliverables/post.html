@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Άρθρο | e-logistiki</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:        '#1a2e5a',
+            navyDark:    '#111e3d',
+            accent:      '#3b5fc0',
+            accentLight: '#4e72d6',
+          },
+          fontFamily: {
+            sans: ['Segoe UI', 'Arial', 'sans-serif'],
+          },
+          typography: (theme) => ({
+            DEFAULT: {
+              css: {
+                color: theme('colors.gray.700'),
+                a: { color: theme('colors.blue.600'), textDecoration: 'underline' },
+                strong: { color: theme('colors.gray.800') },
+                h2: { color: theme('colors.gray.800') },
+                h3: { color: theme('colors.gray.800') },
+              }
+            }
+          })
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+
+    /* NAV LINK UNDERLINE */
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 0; height: 2px;
+      background: #3b5fc0;
+      transition: width .25s ease;
+    }
+    .nav-link:hover::after { width: 100%; }
+
+    /* POST HERO */
+    #postHero {
+      background: linear-gradient(135deg, rgba(17,30,61,0.88) 0%, rgba(26,46,90,0.80) 100%),
+                  var(--hero-image, url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1600&q=80')) center/cover no-repeat;
+      min-height: 38vh;
+    }
+
+    /* PROSE STYLES — renders Quill HTML output properly */
+    #post-content h1 { font-size: 1.75rem; font-weight: 700; color: #1f2937; margin: 1.5rem 0 .75rem; }
+    #post-content h2 { font-size: 1.4rem;  font-weight: 700; color: #1f2937; margin: 1.5rem 0 .6rem; }
+    #post-content h3 { font-size: 1.2rem;  font-weight: 600; color: #374151; margin: 1.25rem 0 .5rem; }
+    #post-content p  { margin: 0 0 1rem; line-height: 1.8; color: #374151; }
+    #post-content a  { color: #3b5fc0; text-decoration: underline; }
+    #post-content a:hover { color: #1a2e5a; }
+    #post-content strong { font-weight: 700; color: #1f2937; }
+    #post-content em { font-style: italic; }
+    #post-content ul { list-style: disc; padding-left: 1.5rem; margin: 0 0 1rem; }
+    #post-content ol { list-style: decimal; padding-left: 1.5rem; margin: 0 0 1rem; }
+    #post-content li { margin-bottom: .4rem; line-height: 1.7; color: #374151; }
+    #post-content blockquote {
+      border-left: 4px solid #3b5fc0;
+      padding: .5rem 1rem;
+      margin: 1.5rem 0;
+      background: #f0f4ff;
+      color: #374151;
+      font-style: italic;
+    }
+    #post-content img { max-width: 100%; border-radius: .5rem; margin: 1.5rem auto; display: block; }
+    #post-content hr  { border: none; border-top: 1px solid #e5e7eb; margin: 2rem 0; }
+    #post-content pre {
+      background: #1e293b; color: #e2e8f0; padding: 1rem 1.25rem;
+      border-radius: .5rem; overflow-x: auto; font-size: .85rem; margin: 1rem 0;
+    }
+
+    /* SHARE BUTTON HOVER */
+    .share-btn { transition: color .15s, transform .15s; }
+    .share-btn:hover { color: #3b5fc0; transform: translateY(-2px); }
+
+    /* SKELETON */
+    .skeleton { background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+                background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 6px; }
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+  </style>
+</head>
+<body class="font-sans text-gray-700 bg-white">
+
+<!-- ============================================================
+     TOP BAR
+============================================================ -->
+<div class="bg-navy text-white text-sm py-2 px-4">
+  <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+    <div class="flex items-center gap-5 flex-wrap">
+      <span class="flex items-center gap-1.5">
+        <i class="fa-regular fa-clock text-xs opacity-75"></i>
+        Δευ - Παρ 09:00-17:00
+      </span>
+      <a href="tel:+302106845523" class="flex items-center gap-1.5 hover:text-blue-300 transition-colors">
+        <i class="fa-solid fa-phone text-xs opacity-75"></i>
+        +30 210 6845523
+      </a>
+      <a href="mailto:info@e-logistiki.gr" class="flex items-center gap-1.5 hover:text-blue-300 transition-colors">
+        <i class="fa-regular fa-envelope text-xs opacity-75"></i>
+        info@e-logistiki.gr
+      </a>
+    </div>
+    <div class="flex items-center gap-3">
+      <span class="text-xs opacity-75 border border-white/30 rounded px-2 py-0.5 cursor-pointer hover:border-white/70 transition-colors">
+        Ελληνικά ▾
+      </span>
+      <a href="#" class="opacity-70 hover:opacity-100 transition-opacity"><i class="fab fa-facebook-f text-xs"></i></a>
+      <a href="#" class="opacity-70 hover:opacity-100 transition-opacity"><i class="fab fa-linkedin-in text-xs"></i></a>
+      <a href="#" class="opacity-70 hover:opacity-100 transition-opacity"><i class="fab fa-twitter text-xs"></i></a>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     NAVBAR
+============================================================ -->
+<nav id="navbar" class="bg-white shadow-sm sticky top-0 z-50 transition-all duration-300">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2">
+      <div class="flex items-center gap-1">
+        <span class="text-2xl font-bold text-gray-800">e-</span>
+        <span class="text-2xl font-bold text-accent">logistiki</span>
+        <div class="w-5 h-5 ml-0.5">
+          <svg viewBox="0 0 40 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 22 Q12 8 20 15 Q28 22 35 8" stroke="#3b5fc0" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+            <circle cx="20" cy="15" r="4" fill="#3b5fc0" opacity=".3"/>
+          </svg>
+        </div>
+      </div>
+      <span class="hidden sm:block text-xs text-gray-400 border-l border-gray-200 pl-3 ml-1">Από το 1998</span>
+    </a>
+    <ul class="hidden lg:flex items-center gap-6 text-sm font-medium text-gray-600">
+      <li><a href="index.html"          class="nav-link hover:text-navy transition-colors">Αρχική</a></li>
+      <li><a href="about.html"          class="nav-link hover:text-navy transition-colors">Η εταιρία</a></li>
+      <li><a href="services.html" class="nav-link hover:text-navy transition-colors">Υπηρεσίες</a></li>
+      <li><a href="blog.html"           class="nav-link active text-accent font-semibold">Blog</a></li>
+      <li><a href="contact.html"  class="nav-link hover:text-navy transition-colors">Επικοινωνία</a></li>
+    </ul>
+    <div class="flex items-center gap-3">
+      <button id="menuBtn" class="lg:hidden p-2 text-gray-600 hover:text-navy transition-colors" aria-label="Menu">
+        <i class="fas fa-bars text-lg"></i>
+      </button>
+    </div>
+  </div>
+  <div id="mobileMenu" class="hidden lg:hidden border-t border-gray-100 bg-white px-4 py-3">
+    <ul class="flex flex-col gap-3 text-sm font-medium text-gray-600">
+      <li><a href="index.html"          class="block hover:text-navy transition-colors py-1">Αρχική</a></li>
+      <li><a href="about.html"          class="block hover:text-navy transition-colors py-1">Η εταιρία</a></li>
+      <li><a href="services.html" class="block hover:text-navy transition-colors py-1">Υπηρεσίες</a></li>
+      <li><a href="blog.html"           class="block text-accent font-semibold py-1">Blog</a></li>
+      <li><a href="contact.html"  class="block hover:text-navy transition-colors py-1">Επικοινωνία</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============================================================
+     POST HERO  (title/meta injected dynamically)
+============================================================ -->
+<section id="postHero" class="flex items-end pb-10">
+  <div class="max-w-4xl mx-auto px-6 w-full pt-20">
+    <!-- Skeleton while loading -->
+    <div id="heroSkeleton">
+      <div class="skeleton h-4 w-32 mb-4 rounded"></div>
+      <div class="skeleton h-10 w-3/4 rounded mb-4"></div>
+      <div class="skeleton h-4 w-48 rounded"></div>
+    </div>
+    <!-- Dynamic content -->
+    <div id="heroContent" class="hidden">
+      <p class="text-white/50 text-xs tracking-[.3em] uppercase mb-3">
+        <a href="index.html" class="hover:text-white/80 transition-colors">Αρχική</a>
+        <span class="mx-2">/</span>
+        <a href="blog.html" class="hover:text-white/80 transition-colors">Blog</a>
+        <span class="mx-2">/</span>
+        <span id="heroCategoryBreadcrumb"></span>
+      </p>
+      <h1 id="postTitle" class="text-3xl md:text-5xl font-black text-white leading-tight mb-4"></h1>
+      <div class="flex flex-wrap items-center gap-4 text-white/70 text-sm">
+        <span class="flex items-center gap-1.5">
+          <i class="far fa-clock text-xs"></i>
+          <span id="postDate"></span>
+        </span>
+        <span class="flex items-center gap-1.5">
+          <i class="far fa-folder text-xs"></i>
+          <span id="postCategories"></span>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     POST BODY
+============================================================ -->
+<article class="py-12 bg-white">
+  <div class="max-w-4xl mx-auto px-6">
+
+    <!-- Error state -->
+    <div id="errorState" class="hidden text-center py-20">
+      <i class="fas fa-triangle-exclamation text-5xl text-red-300 mb-4"></i>
+      <p class="text-gray-500 text-lg font-medium">Το άρθρο δεν βρέθηκε.</p>
+      <a href="blog.html" class="mt-4 inline-block text-accent hover:underline text-sm">← Επιστροφή στο Blog</a>
+    </div>
+
+    <!-- Content skeleton -->
+    <div id="contentSkeleton" class="space-y-4">
+      <div class="skeleton h-4 w-full rounded"></div>
+      <div class="skeleton h-4 w-5/6 rounded"></div>
+      <div class="skeleton h-4 w-full rounded"></div>
+      <div class="skeleton h-4 w-4/5 rounded"></div>
+      <div class="skeleton h-4 w-full rounded"></div>
+      <div class="skeleton h-4 w-2/3 rounded"></div>
+      <div class="skeleton h-52 w-full rounded mt-6"></div>
+      <div class="skeleton h-4 w-full rounded"></div>
+      <div class="skeleton h-4 w-5/6 rounded"></div>
+    </div>
+
+    <!-- Actual post content — innerHTML injected by JS -->
+    <div id="post-content" class="hidden text-base leading-relaxed"></div>
+
+    <!-- Post footer: signature + shares -->
+    <div id="postFooter" class="hidden">
+      <div class="mt-10 pt-6 border-t border-gray-100 text-sm text-gray-500">
+        <p>Τμήμα HR.</p>
+        <p class="mt-1 font-semibold italic text-gray-600" style="font-family: cursive, serif;">E-Logistiki Ae.</p>
+      </div>
+
+      <!-- Share row -->
+      <div class="mt-8 flex items-center gap-4 text-gray-400 border-t border-b border-gray-100 py-4">
+        <span class="text-sm font-semibold text-gray-500">
+          <span id="shareCount">0</span> <span class="font-normal tracking-widest text-xs uppercase">Shares</span>
+        </span>
+        <div class="w-px h-5 bg-gray-200 mx-1"></div>
+        <a href="#" id="shareFacebook"  title="Share on Facebook"  class="share-btn text-gray-400"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" id="shareGooglePlus" title="Share"             class="share-btn text-gray-400"><i class="fab fa-google-plus-g"></i></a>
+        <a href="#" id="sharePinterest" title="Share on Pinterest" class="share-btn text-gray-400"><i class="fab fa-pinterest-p"></i></a>
+        <a href="#" id="shareTwitter"   title="Share on Twitter"   class="share-btn text-gray-400"><i class="fab fa-twitter"></i></a>
+      </div>
+
+      <!-- Prev / Next nav -->
+      <div class="mt-6 flex items-center justify-between text-sm">
+        <a href="blog.html" class="flex items-center gap-2 text-gray-500 hover:text-accent transition-colors font-medium">
+          <i class="fas fa-arrow-left"></i> PREV.
+        </a>
+        <a id="nextPostLink" href="blog.html" class="hidden flex items-center gap-2 text-gray-500 hover:text-accent transition-colors font-medium">
+          NEXT. <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</article>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer class="bg-gray-900 text-gray-400 pt-16 pb-8">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid md:grid-cols-3 gap-12 mb-12">
+      <div>
+        <div class="text-white font-bold text-sm tracking-widest mb-4 uppercase">E-Logistiki Ανώνυμη Εταιρία</div>
+        <p class="text-xs leading-loose">Αρ. Γ.Ε.ΜΗ <span class="text-accent font-semibold">139617303000</span></p>
+        <p class="text-xs mt-3 flex items-start gap-2">
+          <i class="fas fa-map-marker-alt mt-0.5 shrink-0 text-accent"></i>
+          Φιλίππου Λέσα 31, Χαλάνδρι,<br>Αττική – Τ.Κ. 15234
+        </p>
+        <p class="text-xs mt-2 flex items-center gap-2"><i class="fas fa-phone shrink-0 text-accent"></i>+30 210 6845523</p>
+        <p class="text-xs mt-1 flex items-center gap-2"><i class="fas fa-phone shrink-0 text-accent"></i>+30 210 6845572</p>
+        <p class="text-xs mt-1 flex items-center gap-2"><i class="fas fa-phone shrink-0 text-accent"></i>+30 210 6845428</p>
+        <p class="text-xs mt-2 flex items-center gap-2">
+          <i class="fas fa-envelope shrink-0 text-accent"></i>
+          <a href="mailto:info@e-logistiki.gr" class="hover:text-white transition-colors">info@e-logistiki.gr</a>
+        </p>
+      </div>
+      <div>
+        <div class="text-white font-bold text-sm tracking-widest mb-4 uppercase">Τελευταία Νέα</div>
+        <ul id="footerRecentPosts" class="space-y-4 text-xs">
+          <li class="skeleton h-4 w-full rounded"></li>
+          <li class="skeleton h-4 w-5/6 rounded mt-1"></li>
+        </ul>
+      </div>
+      <div>
+        <div class="text-white font-bold text-sm tracking-widest mb-4 uppercase">Χρήσιμα</div>
+        <ul class="space-y-2 text-xs">
+          <li><a href="index.html"          class="text-accent hover:text-white transition-colors flex items-center gap-2"><i class="fas fa-arrow-right text-[10px]"></i> Αρχική</a></li>
+          <li><a href="about.html"          class="hover:text-white transition-colors flex items-center gap-2"><i class="fas fa-arrow-right text-[10px]"></i> Η εταιρία</a></li>
+          <li><a href="services.html" class="hover:text-white transition-colors flex items-center gap-2"><i class="fas fa-arrow-right text-[10px]"></i> Υπηρεσίες</a></li>
+          <li><a href="blog.html"           class="text-white font-semibold flex items-center gap-2"><i class="fas fa-arrow-right text-[10px] text-accent"></i> Blog</a></li>
+          <li><a href="index.html#contact"  class="hover:text-white transition-colors flex items-center gap-2"><i class="fas fa-arrow-right text-[10px]"></i> Επικοινωνία</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-gray-700/50 pt-6 flex flex-wrap justify-between items-center gap-4 text-xs text-gray-600">
+      <p>© 2025 e-logistiki. Όλα τα δικαιώματα διατηρούνται.</p>
+      <div class="flex gap-4">
+        <a href="#" class="hover:text-white transition-colors"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="hover:text-white transition-colors"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#" class="hover:text-white transition-colors"><i class="fab fa-twitter"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     VANILLA JS (nav toggle)
+============================================================ -->
+<script>
+  document.getElementById('menuBtn').addEventListener('click', () => {
+    document.getElementById('mobileMenu').classList.toggle('hidden');
+  });
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('shadow-md', window.scrollY > 10);
+  });
+</script>
+
+<!-- ============================================================
+     SUPABASE MODULE
+     TODO: Replace YOUR_SUPABASE_URL and YOUR_SUPABASE_ANON_KEY
+           with your actual Supabase project credentials.
+     Expected table: posts
+       columns: id, title, content (html), excerpt, image_url,
+                published_at, categories (text[]),
+                slug, comment_count (int4)
+============================================================ -->
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  // TODO: Replace these two values with your Supabase credentials.
+  const SUPABASE_URL      = 'https://okgmknabtpbvucvofldz.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rZ21rbmFidHBidnVjdm9mbGR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0MDM1NDAsImV4cCI6MjA4ODk3OTU0MH0.jHhfe-TBNq8k60dRbFyNRzaBDZm_2-oCrIoC1W2boMo';
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // ── HELPERS ─────────────────────────────────────────────────
+  function formatDate(iso) {
+    if (!iso) return '';
+    return new Date(iso).toLocaleDateString('el-GR', {
+      day: 'numeric', month: 'long', year: 'numeric'
+    }).toUpperCase();
+  }
+
+  function showError() {
+    document.getElementById('heroSkeleton').classList.add('hidden');
+    document.getElementById('contentSkeleton').classList.add('hidden');
+    document.getElementById('errorState').classList.remove('hidden');
+  }
+
+  // ── READ ?id= FROM URL ───────────────────────────────────────
+  const params = new URLSearchParams(window.location.search);
+  const postId = params.get('id');
+
+  if (!postId) {
+    showError();
+  } else {
+    loadPost(postId);
+    loadRecentFooter();
+  }
+
+  // ── FETCH SINGLE POST ────────────────────────────────────────
+  async function loadPost(id) {
+    const { data: post, error } = await supabase
+      .from('posts')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (error || !post) { showError(); return; }
+
+    // Update page title
+    document.title = `${post.title} | e-logistiki`;
+
+    // Update hero background if post has a cover image
+    if (post.image_url) {
+      document.getElementById('postHero').style.setProperty(
+        '--hero-image', `url('${post.image_url}')`
+      );
+    }
+
+    // Populate hero
+    const cats = Array.isArray(post.categories) ? post.categories : [];
+    document.getElementById('heroCategoryBreadcrumb').textContent = cats[0] || 'Blog';
+    document.getElementById('postTitle').textContent       = post.title;
+    document.getElementById('postDate').textContent        = formatDate(post.published_at);
+    document.getElementById('postCategories').textContent  = cats.join(', ') || '—';
+
+    // Show hero
+    document.getElementById('heroSkeleton').classList.add('hidden');
+    document.getElementById('heroContent').classList.remove('hidden');
+
+    // Inject post body HTML (from Quill editor output)
+    const contentEl = document.getElementById('post-content');
+    contentEl.innerHTML = post.content || '<p class="text-gray-400 italic">Δεν υπάρχει περιεχόμενο.</p>';
+
+    // Show body
+    document.getElementById('contentSkeleton').classList.add('hidden');
+    contentEl.classList.remove('hidden');
+    document.getElementById('postFooter').classList.remove('hidden');
+
+    // Share links (current page URL)
+    const pageUrl = encodeURIComponent(window.location.href);
+    const pageTitle = encodeURIComponent(post.title);
+    document.getElementById('shareFacebook').href  = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
+    document.getElementById('shareTwitter').href   = `https://twitter.com/intent/tweet?url=${pageUrl}&text=${pageTitle}`;
+    document.getElementById('sharePinterest').href = `https://pinterest.com/pin/create/button/?url=${pageUrl}&description=${pageTitle}`;
+  }
+
+  // ── FOOTER RECENT POSTS ──────────────────────────────────────
+  async function loadRecentFooter() {
+    const { data } = await supabase
+      .from('posts')
+      .select('id, title, published_at')
+      .order('published_at', { ascending: false })
+      .limit(3);
+
+    if (!data) return;
+    const el = document.getElementById('footerRecentPosts');
+    el.innerHTML = data.map(p => `
+      <li>
+        <a href="post.html?id=${p.id}" class="text-accent hover:text-white transition-colors font-medium leading-snug block">
+          ${p.title}
+        </a>
+        <p class="text-gray-500 mt-0.5">
+          ${new Date(p.published_at).toLocaleDateString('el-GR', { day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase()}
+        </p>
+      </li>`).join('');
+  }
+</script>
+
+</body>
+</html>
